@@ -1,0 +1,22 @@
+Done using scrapy in scrapy shell
+
+url = https://www.terraristik.com/tb/list_classifieds.php?split=40	(split += 20)
+
+Listings and Prices in loop:
+>>> db = []
+>>> for i in range(0, 221, 20):
+...     url = "https://www.terraristik.com/tb/list_classifieds.php?split=" + str(i)
+...     fetch(url)
+...     x = response.xpath('//table[@class="inserat inserat-offer"]/tr/td[@class="ad-small tright"]/text()').extract()
+...     x = x[2 : : 3]
+...     for j in x:
+...             m = j[13 : 24]
+...             db.append(m)
+
+Write CSV:
+>>> import io
+>>> import csv
+>>> csvfile = "database_dates.csv"
+>>> with io.open(csvfile, "a", newline = '', encoding = "utf-8") as fp:
+...      wr = csv.writer(fp, dialect = 'excel')
+...      wr.writerow(db)
